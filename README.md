@@ -4,7 +4,7 @@ Makes FigJam boards first-class citizens in your Obsidian vault
 
 https://github.com/user-attachments/assets/bb1242a0-121d-4aaf-8c0d-9b8564ad4595
 
-## Setup
+## Authentication
 
 To view and edit FigJam boards, you will have to log into FigJam from Obsidian. You might need to enable the Webview core plugin for that.
 
