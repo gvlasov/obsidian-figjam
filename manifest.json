@@ -1,11 +1,10 @@
 {
-	"id": "obsidian-figjam",
+	"id": "figjam",
 	"name": "FigJam",
 	"version": "0.1.0",
 	"minAppVersion": "1.0.0",
-	"description": "Embed and edit FigJam diagrams as first-class files in your vault",
-	"author": "yegor_dranduletov",
+	"description": "Store and edit FigJam diagrams as first-class documents in your vault",
+	"author": "Georgii Vlasov",
 	"authorUrl": "https://github.com/gvlasov",
-	"fundingUrl": "",
 	"isDesktopOnly": true
 }
