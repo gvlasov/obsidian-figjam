@@ -1,18 +1,18 @@
 # obsidian-figjam
 
-Makes FigJam boards first-class citizens in your Obsidian vault
+Store and edit FigJam diagrams as first-class documents in your Obsidian vault
 
-https://github.com/user-attachments/assets/bb1242a0-121d-4aaf-8c0d-9b8564ad4595
+https://github.com/user-attachments/assets/16758caa-0eef-4f1b-9f98-d28f54c47d54
 
 ## Authentication
 
 To view and edit FigJam boards, you will have to log into FigJam from Obsidian. You might need to enable the Webview core plugin for that.
 
-**I could not make the FigJam SSO authentication work inside Electron webviews in Obsidian.** But email/password login works just fine and persists across Obsidian restarts.
+Use email/password authentication to log in to FigJam. This works just fine and persists across Obsidian restarts.
+
+**I could not make the FigJam SSO authentication work inside Electron webviews in Obsidian.** If you figure out how to make SSO work, please submit an issue/PR!
 
 ![](https://github.com/user-attachments/assets/8275b1b6-8b8d-4f1b-a714-1dd39250d565)
-
-If you figure out how to make SSO work, please submit an issue/PR!
 
 ## Organizing FigJam documents
 
