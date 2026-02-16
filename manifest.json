@@ -5,7 +5,7 @@
 	"minAppVersion": "1.0.0",
 	"description": "Embed and edit FigJam diagrams as first-class files in your vault",
 	"author": "yegor_dranduletov",
-	"authorUrl": "",
+	"authorUrl": "https://github.com/gvlasov",
 	"fundingUrl": "",
 	"isDesktopOnly": true
 }
