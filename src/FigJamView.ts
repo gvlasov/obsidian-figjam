@@ -18,7 +18,7 @@ export class FigJamView extends FileView {
 	}
 
 	getDisplayText(): string {
-		return this.figjamData?.title || "FigJam Board";
+		return this.figjamData?.title || "FigJam Diagram";
 	}
 
 	getIcon(): string {
@@ -104,7 +104,7 @@ export class FigJamView extends FileView {
 			// Add event listeners for debugging
 			this.webviewEl.addEventListener("did-fail-load", (e: any) => {
 				console.error("Webview failed to load:", e);
-				new Notice("Failed to load FigJam board");
+				new Notice("Failed to load FigJam diagram");
 			});
 
 			this.webviewEl.addEventListener("did-start-loading", () => {
@@ -141,7 +141,7 @@ export class FigJamView extends FileView {
 		contentEl.empty();
 
 		const errorContainer = contentEl.createDiv({ cls: "figjam-error" });
-		errorContainer.createEl("h3", { text: "Error Loading FigJam Board" });
+		errorContainer.createEl("h3", { text: "Error Loading FigJam Diagram" });
 		errorContainer.createEl("p", { text: message });
 
 		const retryBtn = errorContainer.createEl("button", { text: "Retry" });

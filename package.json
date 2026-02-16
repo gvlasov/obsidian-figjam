@@ -1,7 +1,7 @@
 {
 	"name": "obsidian-figjam",
 	"version": "0.1.0",
-	"description": "Embed and edit FigJam boards as first-class files in your Obsidian vault",
+	"description": "Embed and edit FigJam diagrams as first-class files in your Obsidian vault",
 	"main": "main.js",
 	"type": "module",
 	"scripts": {

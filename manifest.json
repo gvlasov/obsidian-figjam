@@ -3,7 +3,7 @@
 	"name": "FigJam",
 	"version": "0.1.0",
 	"minAppVersion": "1.0.0",
-	"description": "Embed and edit FigJam boards as first-class files in your vault",
+	"description": "Embed and edit FigJam diagrams as first-class files in your vault",
 	"author": "yegor_dranduletov",
 	"authorUrl": "",
 	"fundingUrl": "",

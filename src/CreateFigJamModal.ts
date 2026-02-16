@@ -17,14 +17,14 @@ export class CreateFigJamModal extends Modal {
 		const { contentEl } = this;
 		contentEl.empty();
 
-		contentEl.createEl("h2", { text: "Create New FigJam Board" });
+		contentEl.createEl("h2", { text: "Create New FigJam Diagram" });
 
 		// Title input
 		new Setting(contentEl)
-			.setName("Board Title")
-			.setDesc("A descriptive title for this FigJam board")
+			.setName("Diagram Title")
+			.setDesc("A descriptive title for this FigJam diagram")
 			.addText(text => text
-				.setPlaceholder("My FigJam Board")
+				.setPlaceholder("My FigJam Diagram")
 				.setValue(this.title)
 				.onChange(value => {
 					this.title = value;
@@ -71,7 +71,7 @@ export class CreateFigJamModal extends Modal {
 	private submit(): void {
 		// Validate title
 		if (!this.title.trim()) {
-			new Notice("Please enter a title for the FigJam board");
+			new Notice("Please enter a title for the FigJam diagram");
 			return;
 		}
 

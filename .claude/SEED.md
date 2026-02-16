@@ -27,7 +27,7 @@ Build an Obsidian plugin that makes FigJam documents first-class citizens in Obs
 ```json
 {
   "url": "https://www.figma.com/board/XXXXXX/Board-Name",
-  "title": "My FigJam Board",
+  "title": "My FigJam Diagram",
   "created": "2026-02-16T12:00:00Z",
   "lastOpened": "2026-02-16T12:00:00Z"
 }
@@ -120,7 +120,7 @@ This is the core of the plugin. It renders the FigJam editor.
     this.app.workspace.on("file-menu", (menu, file) => {
       if (file instanceof TFolder) {
         menu.addItem((item) => {
-          item.setTitle("New FigJam board")
+          item.setTitle("New FigJam diagram")
             .setIcon("layout-dashboard")
             .onClick(() => { /* open CreateFigJamModal with target folder */ });
         });
@@ -155,7 +155,7 @@ obsidian-figjam/
   "name": "FigJam",
   "version": "0.1.0",
   "minAppVersion": "1.0.0",
-  "description": "Embed and edit FigJam boards as first-class files in your vault",
+  "description": "Embed and edit FigJam diagrams as first-class files in your vault",
   "author": "Your Name",
   "isDesktopOnly": true
 }
