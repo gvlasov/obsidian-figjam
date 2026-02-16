@@ -57,11 +57,6 @@ export default class FigJamPlugin extends Plugin {
 		// Register settings tab
 		this.addSettingTab(new FigJamSettingTab(this.app, this));
 
-		console.log("FigJam plugin loaded");
-	}
-
-	onunload() {
-		console.log("FigJam plugin unloaded");
 	}
 
 	async loadSettings() {
@@ -95,7 +90,6 @@ export default class FigJamPlugin extends Plugin {
 
 				new Notice(`Created FigJam diagram: ${fileName}`);
 			} catch (error) {
-				console.error("Error creating FigJam file:", error);
 				new Notice("Failed to create FigJam file");
 			}
 		}).open();

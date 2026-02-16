@@ -71,7 +71,6 @@ export class FigJamView extends FileView {
 			// Render the FigJam board
 			this.renderFigJam();
 		} catch (error) {
-			console.error("Error loading FigJam file:", error);
 			new Notice("Failed to load FigJam file");
 			const errorMessage = error instanceof Error ? error.message : String(error);
 			this.showError("Failed to load FigJam file: " + errorMessage);
@@ -103,22 +102,12 @@ export class FigJamView extends FileView {
 
 			// Add event listeners for debugging
 			this.webviewEl.addEventListener("did-fail-load", (e: any) => {
-				console.error("Webview failed to load:", e);
 				new Notice("Failed to load FigJam diagram");
-			});
-
-			this.webviewEl.addEventListener("did-start-loading", () => {
-				console.log("Webview started loading");
-			});
-
-			this.webviewEl.addEventListener("did-finish-load", () => {
-				console.log("Webview finished loading");
 			});
 
 			webviewContainer.appendChild(this.webviewEl);
 		} catch (error) {
 			// Fallback to iframe if webview doesn't work
-			console.warn("Webview not available, falling back to iframe:", error);
 			this.createIframeFallback(webviewContainer);
 		}
 	}
@@ -141,7 +130,7 @@ export class FigJamView extends FileView {
 		contentEl.empty();
 
 		const errorContainer = contentEl.createDiv({ cls: "figjam-error" });
-		errorContainer.createEl("h3", { text: "Error Loading FigJam Diagram" });
+		errorContainer.createEl("h3", { text: "Error Loading FigJam Board" });
 		errorContainer.createEl("p", { text: message });
 
 		const retryBtn = errorContainer.createEl("button", { text: "Retry" });
