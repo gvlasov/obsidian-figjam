@@ -14,14 +14,16 @@ Use email/password authentication to log in to FigJam. This works just fine and 
 
 ![](https://github.com/user-attachments/assets/8275b1b6-8b8d-4f1b-a714-1dd39250d565)
 
-## Organizing FigJam documents
+## Organizing FigJam diagram
 
 FigJam documents in your vault can be parts of the same FigJam board &ndash; that's convenient so you can keep them all in the same space and keep using the free FigJam plan where you can only have a single project.
 
-1. Click on an element on your FigJam board in a web browser, e.g., a square section with nested elements
-2. Browser page changes the URL for that specific node
+For that, use a link to a specific node when creating your Obsidian FigJam diagram:
+
+1. Have a square section with nested elements on your FigJam board
+2. Click on the section to select it - this changes the URL in your browser
 3. Copy the URL
-4. Import it into your Obsidian vault
+4. Create an Obsidian FigJam diagram in your vault with that URL
 5. The document opens in Obsidian with that node fitting into your viewport
 
 
