@@ -5,7 +5,7 @@ import FigJamPlugin from "./main";
 export class FigJamView extends FileView {
 	plugin: FigJamPlugin;
 	file: TFile | null = null;
-	webviewEl: any = null;
+	webviewEl: HTMLElement | null = null;
 	figjamData: FigJamFileData | null = null;
 
 	constructor(leaf: WorkspaceLeaf, plugin: FigJamPlugin) {
@@ -25,7 +25,7 @@ export class FigJamView extends FileView {
 		return FIGJAM_ICON;
 	}
 
-	async onOpen(): Promise<void> {
+	onOpen(): Promise<void> {
 		// Container will be populated when a file is loaded
 		this.containerEl.addClass("figjam-view");
 
@@ -37,16 +37,19 @@ export class FigJamView extends FileView {
 		});
 
 		this.addAction("rotate-cw", "Reload board", () => {
-			if (this.webviewEl && this.webviewEl.reload) {
-				this.webviewEl.reload();
+			if (this.webviewEl && 'reload' in this.webviewEl) {
+				(this.webviewEl as HTMLElement & { reload: () => void }).reload();
 			} else if (this.file) {
-				this.onLoadFile(this.file);
+				void this.onLoadFile(this.file);
 			}
 		});
+
+		return Promise.resolve();
 	}
 
-	async onClose(): Promise<void> {
+	onClose(): Promise<void> {
 		this.cleanup();
+		return Promise.resolve();
 	}
 
 	async onLoadFile(file: TFile): Promise<void> {
@@ -59,8 +62,8 @@ export class FigJamView extends FileView {
 
 			// Validate the data
 			if (!this.figjamData.url) {
-				new Notice("Invalid .figjam file: missing URL");
-				this.showError("Invalid .figjam file: missing URL");
+				new Notice("Invalid file: missing URL");
+				this.showError("Invalid file: missing URL");
 				return;
 			}
 
@@ -70,17 +73,17 @@ export class FigJamView extends FileView {
 
 			// Render the FigJam board
 			this.renderFigJam();
-		} catch (error) {
-			new Notice("Failed to load FigJam file");
-			const errorMessage = error instanceof Error ? error.message : String(error);
-			this.showError("Failed to load FigJam file: " + errorMessage);
+		} catch {
+			new Notice("Failed to load file");
+			this.showError("Failed to load file");
 		}
 	}
 
-	async onUnloadFile(file: TFile): Promise<void> {
+	onUnloadFile(file: TFile): Promise<void> {
 		this.cleanup();
 		this.file = null;
 		this.figjamData = null;
+		return Promise.resolve();
 	}
 
 	private renderFigJam(): void {
@@ -92,21 +95,18 @@ export class FigJamView extends FileView {
 
 		try {
 			// Try to create an Electron webview
-			this.webviewEl = document.createElement("webview") as any;
+			this.webviewEl = document.createElement("webview");
 			this.webviewEl.setAttribute("src", this.figjamData!.url);
 			this.webviewEl.setAttribute("allowpopups", "");
 			this.webviewEl.setAttribute("partition", this.plugin.settings.webviewPartition);
-			this.webviewEl.style.width = "100%";
-			this.webviewEl.style.height = "100%";
-			this.webviewEl.style.border = "none";
 
 			// Add event listeners for debugging
-			this.webviewEl.addEventListener("did-fail-load", (e: any) => {
-				new Notice("Failed to load FigJam diagram");
+			this.webviewEl.addEventListener("did-fail-load", () => {
+				new Notice("Failed to load diagram");
 			});
 
 			webviewContainer.appendChild(this.webviewEl);
-		} catch (error) {
+		} catch {
 			// Fallback to iframe if webview doesn't work
 			this.createIframeFallback(webviewContainer);
 		}
@@ -116,9 +116,6 @@ export class FigJamView extends FileView {
 		const iframe = container.createEl("iframe", {
 			cls: "figjam-iframe"
 		});
-		iframe.style.width = "100%";
-		iframe.style.height = "100%";
-		iframe.style.border = "none";
 		iframe.setAttribute("src", this.figjamData!.url);
 		iframe.setAttribute("allowfullscreen", "");
 
@@ -130,13 +127,13 @@ export class FigJamView extends FileView {
 		contentEl.empty();
 
 		const errorContainer = contentEl.createDiv({ cls: "figjam-error" });
-		errorContainer.createEl("h3", { text: "Error Loading FigJam Board" });
+		errorContainer.createEl("h3", { text: "Error loading board" });
 		errorContainer.createEl("p", { text: message });
 
 		const retryBtn = errorContainer.createEl("button", { text: "Retry" });
 		retryBtn.addEventListener("click", () => {
 			if (this.file) {
-				this.onLoadFile(this.file);
+				void this.onLoadFile(this.file);
 			}
 		});
 	}

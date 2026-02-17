@@ -5,9 +5,9 @@ export class CreateFigJamModal extends Modal {
 	title: string = "";
 	url: string = "";
 	targetFolder: TFolder | null = null;
-	onSubmit: (data: FigJamFileData, fileName: string) => void;
+	onSubmit: (data: FigJamFileData, fileName: string) => void | Promise<void>;
 
-	constructor(app: App, targetFolder: TFolder | null, onSubmit: (data: FigJamFileData, fileName: string) => void) {
+	constructor(app: App, targetFolder: TFolder | null, onSubmit: (data: FigJamFileData, fileName: string) => void | Promise<void>) {
 		super(app);
 		this.targetFolder = targetFolder;
 		this.onSubmit = onSubmit;
@@ -17,14 +17,14 @@ export class CreateFigJamModal extends Modal {
 		const { contentEl } = this;
 		contentEl.empty();
 
-		contentEl.createEl("h2", { text: "Create New FigJam Diagram" });
+		contentEl.createEl("h2", { text: "Create new diagram" });
 
 		// Title input
 		new Setting(contentEl)
-			.setName("Diagram Title")
-			.setDesc("A descriptive title for this FigJam diagram")
+			.setName("Diagram title")
+			.setDesc("A descriptive title for this diagram")
 			.addText(text => text
-				.setPlaceholder("My FigJam Diagram")
+				.setPlaceholder("My diagram")
 				.setValue(this.title)
 				.onChange(value => {
 					this.title = value;
@@ -32,8 +32,8 @@ export class CreateFigJamModal extends Modal {
 
 		// URL input
 		new Setting(contentEl)
-			.setName("FigJam URL")
-			.setDesc("The URL of the FigJam board (e.g., https://www.figma.com/board/...)")
+			.setName("URL")
+			.setDesc("The URL of the board (e.g., https://www.figma.com/board/...)")
 			.addText(text => text
 				.setPlaceholder("https://www.figma.com/board/...")
 				.setValue(this.url)
@@ -71,13 +71,13 @@ export class CreateFigJamModal extends Modal {
 	private submit(): void {
 		// Validate title
 		if (!this.title.trim()) {
-			new Notice("Please enter a title for the FigJam diagram");
+			new Notice("Please enter a title for the diagram");
 			return;
 		}
 
 		// Validate URL
 		if (!this.url.trim()) {
-			new Notice("Please enter a FigJam URL");
+			new Notice("Please enter a URL");
 			return;
 		}
 
@@ -99,7 +99,7 @@ export class CreateFigJamModal extends Modal {
 		// Generate file name from title
 		const fileName = this.sanitizeFileName(this.title) + ".figjam";
 
-		this.onSubmit(fileData, fileName);
+		void this.onSubmit(fileData, fileName);
 		this.close();
 	}
 

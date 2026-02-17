@@ -14,11 +14,9 @@ export class FigJamSettingTab extends PluginSettingTab {
 
 		containerEl.empty();
 
-		containerEl.createEl("h2", { text: "FigJam Plugin Settings" });
-
 		new Setting(containerEl)
 			.setName("Open in new tab")
-			.setDesc("Open FigJam files in a new tab by default")
+			.setDesc("Open files in a new tab by default")
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.defaultOpenInNewTab)
 				.onChange(async (value) => {
@@ -28,9 +26,8 @@ export class FigJamSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName("Webview partition")
-			.setDesc("Session partition name for persistent Figma authentication (advanced)")
+			.setDesc("Session partition name for persistent authentication (advanced)")
 			.addText(text => text
-				.setPlaceholder("persist:figma")
 				.setValue(this.plugin.settings.webviewPartition)
 				.onChange(async (value) => {
 					this.plugin.settings.webviewPartition = value || "persist:figma";
@@ -38,7 +35,7 @@ export class FigJamSettingTab extends PluginSettingTab {
 				}));
 
 		containerEl.createEl("p", {
-			text: "Note: Changes to some settings may require reopening FigJam files to take effect.",
+			text: "Note: changes to some settings may require reopening files to take effect.",
 			cls: "setting-item-description"
 		});
 	}

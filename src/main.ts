@@ -21,8 +21,8 @@ export default class FigJamPlugin extends Plugin {
 
 		// Command: Create new FigJam file
 		this.addCommand({
-			id: 'create-figjam-file',
-			name: 'Create new FigJam diagram',
+			id: 'create-file',
+			name: 'Create new diagram',
 			callback: () => {
 				this.createFigJamFile(null);
 			}
@@ -30,11 +30,11 @@ export default class FigJamPlugin extends Plugin {
 
 		// Command: Open FigJam URL (without saving)
 		this.addCommand({
-			id: 'open-figjam-url',
-			name: 'Open FigJam URL',
+			id: 'open-url',
+			name: 'Open URL',
 			callback: () => {
 				// For future implementation - quick open without file
-				new Notice("This feature is coming soon! For now, use 'Create new FigJam diagram' to save and open.");
+				new Notice("This feature is coming soon! For now, use 'create new diagram' to save and open.");
 			}
 		});
 
@@ -44,7 +44,7 @@ export default class FigJamPlugin extends Plugin {
 				if (file instanceof TFolder) {
 					menu.addItem((item) => {
 						item
-							.setTitle("New FigJam diagram")
+							.setTitle("New diagram")
 							.setIcon(FIGJAM_ICON)
 							.onClick(() => {
 								this.createFigJamFile(file);
@@ -88,9 +88,9 @@ export default class FigJamPlugin extends Plugin {
 				// Open the file
 				await this.openFigJamFile(file);
 
-				new Notice(`Created FigJam diagram: ${fileName}`);
-			} catch (error) {
-				new Notice("Failed to create FigJam file");
+				new Notice(`Created diagram: ${fileName}`);
+			} catch {
+				new Notice("Failed to create file");
 			}
 		}).open();
 	}
