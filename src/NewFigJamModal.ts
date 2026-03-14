@@ -15,6 +15,10 @@ export class NewFigJamModal extends Modal {
 		const { contentEl } = this;
 		contentEl.empty();
 
+		contentEl.addEventListener("keydown", (e) => {
+			if (e.key === "Enter") this.submit();
+		});
+
 		contentEl.createEl("h2", { text: "New diagram" });
 
 		// Name input

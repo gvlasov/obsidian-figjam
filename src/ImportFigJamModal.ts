@@ -17,6 +17,10 @@ export class ImportFigJamModal extends Modal {
 		const { contentEl } = this;
 		contentEl.empty();
 
+		contentEl.addEventListener("keydown", (e) => {
+			if (e.key === "Enter") this.submit();
+		});
+
 		contentEl.createEl("h2", { text: "Import diagram" });
 
 		// Title input
