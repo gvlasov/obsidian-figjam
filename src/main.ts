@@ -1,8 +1,9 @@
 import { Notice, Plugin, TFile, TFolder, WorkspaceLeaf } from 'obsidian';
-import { DEFAULT_SETTINGS, FigJamPluginSettings, FIGJAM_VIEW_TYPE, FIGJAM_ICON, FigJamFileData } from "./constants";
+import { DEFAULT_SETTINGS, FigJamPluginSettings, FIGJAM_VIEW_TYPE, FIGJAM_ICON, FIGJAM_PLACEHOLDER_URL, FigJamFileData } from "./constants";
 import { FigJamSettingTab } from "./settings";
 import { FigJamView } from "./FigJamView";
-import { CreateFigJamModal } from "./CreateFigJamModal";
+import { ImportFigJamModal } from "./ImportFigJamModal";
+import { NewFigJamModal } from "./NewFigJamModal";
 
 export default class FigJamPlugin extends Plugin {
 	settings: FigJamPluginSettings;
@@ -19,12 +20,21 @@ export default class FigJamPlugin extends Plugin {
 			(leaf: WorkspaceLeaf) => new FigJamView(leaf, this)
 		);
 
-		// Command: Create new FigJam file
+		// Command: New diagram (creates a blank board via Figma)
 		this.addCommand({
-			id: 'create-file',
-			name: 'Create new diagram',
+			id: 'new-diagram',
+			name: 'New diagram',
 			callback: () => {
-				this.createFigJamFile(null);
+				this.newFigJamDiagram(null);
+			}
+		});
+
+		// Command: Import existing FigJam diagram by URL
+		this.addCommand({
+			id: 'import-file',
+			name: 'Import diagram',
+			callback: () => {
+				this.importFigJamFile(null);
 			}
 		});
 
@@ -47,7 +57,15 @@ export default class FigJamPlugin extends Plugin {
 							.setTitle("New diagram")
 							.setIcon(FIGJAM_ICON)
 							.onClick(() => {
-								this.createFigJamFile(file);
+								this.newFigJamDiagram(file);
+							});
+					});
+					menu.addItem((item) => {
+						item
+							.setTitle("Import diagram")
+							.setIcon(FIGJAM_ICON)
+							.onClick(() => {
+								this.importFigJamFile(file);
 							});
 					});
 				}
@@ -67,8 +85,38 @@ export default class FigJamPlugin extends Plugin {
 		await this.saveData(this.settings);
 	}
 
-	private createFigJamFile(targetFolder: TFolder | null): void {
-		new CreateFigJamModal(this.app, targetFolder, async (data: FigJamFileData, fileName: string) => {
+	private newFigJamDiagram(targetFolder: TFolder | null): void {
+		new NewFigJamModal(this.app, targetFolder, async (name: string, fileName: string) => {
+			try {
+				const folderPath = targetFolder ? targetFolder.path : "";
+				const filePath = folderPath ? `${folderPath}/${fileName}` : fileName;
+
+				const existingFile = this.app.vault.getAbstractFileByPath(filePath);
+				if (existingFile) {
+					new Notice(`File ${fileName} already exists!`);
+					return;
+				}
+
+				const now = new Date().toISOString();
+				const fileData: FigJamFileData = {
+					url: FIGJAM_PLACEHOLDER_URL,
+					title: name,
+					created: now,
+					lastOpened: now
+				};
+
+				const fileContent = JSON.stringify(fileData, null, 2);
+				const file = await this.app.vault.create(filePath, fileContent);
+
+				await this.openFigJamFile(file);
+			} catch {
+				new Notice("Failed to create file");
+			}
+		}).open();
+	}
+
+	private importFigJamFile(targetFolder: TFolder | null): void {
+		new ImportFigJamModal(this.app, targetFolder, async (data: FigJamFileData, fileName: string) => {
 			try {
 				// Determine the file path
 				const folderPath = targetFolder ? targetFolder.path : "";
@@ -88,7 +136,7 @@ export default class FigJamPlugin extends Plugin {
 				// Open the file
 				await this.openFigJamFile(file);
 
-				new Notice(`Created diagram: ${fileName}`);
+				new Notice(`Imported diagram: ${fileName}`);
 			} catch {
 				new Notice("Failed to create file");
 			}
